@@ -41,8 +41,7 @@ private:
             return;
         }
 
-        list<Employee>::iterator it;
-        for (it = employeeList.begin(); it != employeeList.end(); ++it) {
+        for (list<Employee>::iterator it = employeeList.begin(); it != employeeList.end(); ++it) {
             file << it->id << endl;
             file << it->name << endl;
             file << it->timeIn << endl;
@@ -56,22 +55,33 @@ public:
     void addEmployee() {
         int id;
         string name;
-        cout << "Enter Employee ID: ";
-        cin >> id;
-        cin.ignore();
-        cout << "Enter Employee Name: ";
-        getline(cin, name);
-
-        Employee empty(id, name, "", "");
-        employeeQueue.push(empty);
-        employeeList.push_back(empty);
-        employeeStack.push(empty);
-        cout << "Employee added successfully!" << endl;
-        saveToFile();  // Overwrite the existing file
+        char letterChoice;
+        cout << "*************************************!Disclaimer!*****************************************" << endl;
+        cout << "This will create a new file if you came from the main menu, deleting any existing file." << endl;
+        cout << "Do you wish to proceed? (Y / N): " << endl;
+        cout << "******************************************************************************************" << endl;
+        cout << ": ";
+        cin >> letterChoice;
+        if (letterChoice == 'y' || letterChoice == 'Y'){
+	        cout << "Enter Employee ID: ";
+	        cin >> id;
+	        cin.ignore();
+	        cout << "Enter Employee Name: ";
+	        getline(cin, name);
+	
+	        Employee empty(id, name, "", "");
+	        employeeQueue.push(empty);
+	        employeeList.push_back(empty);
+	        employeeStack.push(empty);
+	        cout << "Employee added successfully!" << endl;
+	        saveToFile();
+		} else if (letterChoice == 'n' || letterChoice == 'N'){
+            // No action taken
+        }
     }
 
     void readEmployeeLogs() {
-        system("cls");
+        system("clear || cls");  // This works on both Unix and Windows
         ifstream file("employee_logs.txt");
         if (!file.is_open()) {
             cout << "Error opening file!" << endl;
@@ -121,13 +131,12 @@ public:
     }
 
     void recordTimeIn() {
-        system("cls");
+        system("clear || cls");  // This works on both Unix and Windows
         int id;
         cout << "Enter Employee ID to record time in: ";
         cin >> id;
 
-        list<Employee>::iterator it;
-        for (it = employeeList.begin(); it != employeeList.end(); ++it) {
+        for (list<Employee>::iterator it = employeeList.begin(); it != employeeList.end(); ++it) {
             if (it->id == id) {
                 it->timeIn = getCurrentTime();
                 cout << "Time In recorded as " << it->timeIn << endl;
@@ -140,13 +149,12 @@ public:
     }
 
     void recordTimeOut() {
-        system("cls");
+        system("clear || cls");  // This works on both Unix and Windows
         int id;
         cout << "Enter Employee ID to record time out: ";
         cin >> id;
 
-        list<Employee>::iterator it;
-        for (it = employeeList.begin(); it != employeeList.end(); ++it) {
+        for (list<Employee>::iterator it = employeeList.begin(); it != employeeList.end(); ++it) {
             if (it->id == id) {
                 it->timeOut = getCurrentTime();
                 cout << "Time Out recorded as " << it->timeOut << endl;

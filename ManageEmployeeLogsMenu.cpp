@@ -25,7 +25,7 @@ void ManageEmployeeLogsMenu(int& choice){
         cout << "                                                     " << endl;
         cout << "        [1] - Add Employee                           " << endl;
         cout << "        [2] - Read Employee Logs                     " << endl;
-        //cout << "        [3] - Update Logs                            " << endl;
+        cout << "        [3] - Update Logs                            " << endl;
         cout << "        [4] - Record Time In                         " << endl;
         cout << "        [5] - Record Time Out                        " << endl;
         cout << "        [6] - Return Main Menu                       " << endl;
@@ -44,7 +44,7 @@ void ManageEmployeeLogsMenu(int& choice){
                 logManager.readEmployeeLogs();
                 system("pause");
                 break;
-            //case 3:
+            case 3:
                 logManager.updateLogs();
                 system("pause");
                 break;
