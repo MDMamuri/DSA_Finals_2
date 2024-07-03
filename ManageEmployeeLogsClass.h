@@ -28,23 +28,47 @@ private:
         return string(buffer);
     }
 
+    void saveToFile(bool append = false) {
+        ofstream file;
+        if (append) {
+            file.open("employee_logs.txt", ios::app);
+        } else {
+            file.open("employee_logs.txt");
+        }
+
+        if (!file.is_open()) {
+            cout << "Error opening file!" << endl;
+            return;
+        }
+
+        list<Employee>::iterator it;
+        for (it = employeeList.begin(); it != employeeList.end(); ++it) {
+            file << it->id << endl;
+            file << it->name << endl;
+            file << it->timeIn << endl;
+            file << it->timeOut << endl;
+        }
+
+        file.close();
+    }
+
 public:
     void addEmployee() {
         int id;
         string name;
-            cout << "Enter Employee ID: ";
-            cin >> id;
-            cin.ignore();
-            cout << "Enter Employee Name: ";
-            getline(cin, name);
+        cout << "Enter Employee ID: ";
+        cin >> id;
+        cin.ignore();
+        cout << "Enter Employee Name: ";
+        getline(cin, name);
 
-            Employee empty(id, name, "", "");
-            employeeQueue.push(empty);
-            employeeList.push_back(empty);
-            employeeStack.push(empty);
-            cout << "Employee added successfully!" << endl;
-            saveToFile(); 
-    } 
+        Employee empty(id, name, "", "");
+        employeeQueue.push(empty);
+        employeeList.push_back(empty);
+        employeeStack.push(empty);
+        cout << "Employee added successfully!" << endl;
+        saveToFile();  // Overwrite the existing file
+    }
 
     void readEmployeeLogs() {
         system("cls");
@@ -72,7 +96,14 @@ public:
     }
 
     void updateLogs() {
-        system("cls");
+        ifstream checkFile("employee_logs.txt");
+        if (!checkFile.is_open()) {
+            cout << "No existing logs found. Please add an employee first." << endl;
+            return;
+        }
+
+        checkFile.close();
+
         int id;
         string name;
         cout << "Enter Employee ID: ";
@@ -86,7 +117,7 @@ public:
         employeeList.push_back(empty);
         employeeStack.push(empty);
         cout << "Employee added successfully!" << endl;
-        saveToFile();
+        saveToFile(true);  // Append to the existing file
     }
 
     void recordTimeIn() {
@@ -100,7 +131,7 @@ public:
             if (it->id == id) {
                 it->timeIn = getCurrentTime();
                 cout << "Time In recorded as " << it->timeIn << endl;
-                saveToFile();
+                saveToFile(true);  // Append the updated log
                 return;
             }
         }
@@ -119,32 +150,13 @@ public:
             if (it->id == id) {
                 it->timeOut = getCurrentTime();
                 cout << "Time Out recorded as " << it->timeOut << endl;
-                saveToFile();
+                saveToFile(true);  // Append the updated log
                 return;
             }
         }
 
         cout << "Employee not found!" << endl;
     }
-
-    void saveToFile() {
-        ofstream file("employee_logs.txt", ios::app);
-        if (!file.is_open()) {
-            cout << "Error opening file!" << endl;
-            return;
-        }
-
-        list<Employee>::iterator it;
-        for (it = employeeList.begin(); it != employeeList.end(); ++it) {
-            file << it->id << endl;
-            file << it->name << endl;
-            file << it->timeIn << endl;
-            file << it->timeOut << endl;
-        }
-
-        file.close();
-    }
 };
 
 #endif
-
